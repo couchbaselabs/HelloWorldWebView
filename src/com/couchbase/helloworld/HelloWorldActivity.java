@@ -39,6 +39,7 @@ public class HelloWorldActivity extends Activity {
 		@Override
 		public void couchStarted(String host, int port) throws RemoteException {
 			// TODO Auto-generated method stub
+
 			WebView webView = new WebView(HelloWorldActivity.this);
 			String startUrl = "http://" + host + ":" + Integer.toString(port) + "/grocery-sync/_design/grocery/index.html";
 			String sessionUrl = "http://" + host + ":" + Integer.toString(port) + "/_session";
@@ -47,12 +48,15 @@ public class HelloWorldActivity extends Activity {
 			// trigger replication with this json
 			String startRep = "{\"source\":\""+ syncpoint +"\", \"target\":\""+ localdb +"\", \"create_target\":true}";
 			String replicateUrl = "http://" + host + ":" + Integer.toString(port) + "/_replicate";
+			Log.e("hw", "HelloWorld has a Couch "+sessionUrl);
+
 			try {
 				AndCouch req = AndCouch.post(replicateUrl, startRep);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			Log.e("hw", "repication complete "+replicateUrl);
 
 			setContentView(webView);
 			webView.loadUrl(startUrl);
