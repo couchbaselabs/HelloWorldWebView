@@ -40,22 +40,19 @@ public class HelloWorldActivity extends Activity {
 		public void couchStarted(String host, int port) throws RemoteException {
 			// TODO Auto-generated method stub
 			WebView webView = new WebView(HelloWorldActivity.this);
-			String startUrl = "http://" + host + ":" + Integer.toString(port) + "/grocery_sync/_design/grocery/index.html";
+			String startUrl = "http://" + host + ":" + Integer.toString(port) + "/grocery-sync/_design/grocery/index.html";
 			String sessionUrl = "http://" + host + ":" + Integer.toString(port) + "/_session";
 			String syncpoint = "http://couchbase.ic.ht/grocery-sync";
 			String localdb = "grocery-sync";
 			// trigger replication with this json
 			String startRep = "{\"source\":\""+ syncpoint +"\", \"target\":\""+ localdb +"\", \"create_target\":true}";
 			String replicateUrl = "http://" + host + ":" + Integer.toString(port) + "/_replicate";
-//			Log.d("ok", "replicate");
-//			try {
-//				Log.INFO("ok", "replicate");
-//				AndCouch req = AndCouch.post(replicateUrl, startRep, null);
-////				Log.INFO("ok", "replicating "+req.status+" "+startRep);
-//			} catch (JSONException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				AndCouch req = AndCouch.post(replicateUrl, startRep);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			setContentView(webView);
 			webView.loadUrl(startUrl);
